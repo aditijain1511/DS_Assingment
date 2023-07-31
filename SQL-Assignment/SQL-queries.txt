@@ -1,0 +1,42 @@
+/*Topic - Condition + String matching + logical operator*/
+
+/*Question 1*/
+select CustomerID, FirstName, LastName, City  from customers where FirstName like "N%" OR City = "xyz";
+
+/*Question 2*/
+select TrackId, Name, Composer, UnitPrice from tracks where UnitPrice between 0.01 and 2.00 and Composer not like "%T%";
+
+
+/*Topic - Group By, Order By */
+
+/*Question 1*/
+/*There is no record for year 2020 so instead calculating for year 2012 June */
+select InvoiceDate,sum(Total) as "Amount_Sum_of_Invoices",avg(Total) as "Amount_Average_of_Invoices" from invoices where InvoiceDate like "2012-06-%" group by InvoiceDate;
+
+/*Question 2*/
+select TrackId, count(Quantity) as "Total_Quantity" from invoice_items group by TrackId order by Total_Quantity desc;
+
+
+/*Topic - Join/Subqueries */
+
+/*Question 1*/
+select * from artists;
+select * from playlists;
+select * from playlist_track;
+
+/*Question 1*/
+SELECT DISTINCT a.artist_id, a.artist_name
+FROM artists a
+LEFT JOIN tracks t ON a.artist_id = t.artist_id
+LEFT JOIN playlists_tracks pt ON t.track_id = pt.track_id
+WHERE pt.track_id IS NULL;
+
+
+/*Question 2*/
+select al.AlbumId, al.Title, count(pl.PlaylistId) AS playListCount from tracks t
+       left join playlist_track pl on t.TrackId = pl.TrackId
+       left join albums al on al.AlbumId = t.AlbumId
+       group by t.AlbumId
+       having playListCount > 10;
+ 
+
